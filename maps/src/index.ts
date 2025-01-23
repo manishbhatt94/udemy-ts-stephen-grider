@@ -1,15 +1,15 @@
+import { Company } from "./Company";
 import { CustomMap } from "./CustomMap";
 import { User } from "./User";
-// import { Company } from "./Company";
-// import {} from "google.maps";
-/**
-/// <reference types="@types/google.maps" />
- */
 
-const user = new User();
+async function app() {
+  const customMap = new CustomMap("map");
+  await customMap.initMap();
+  const user = new User();
+  await customMap.addMarker(user);
+  const company = new Company();
+  await customMap.addMarker(company);
+}
 
-const customMap = new CustomMap("map");
-
-customMap.addUserMarker(user);
-
+app();
 // window.google.maps.places.ParkingOptions
