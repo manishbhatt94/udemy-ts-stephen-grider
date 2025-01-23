@@ -1,0 +1,5 @@
+Course link on Udemy:
+https://www.udemy.com/course/typescript-the-complete-developers-guide/
+
+Instructor: Stephen Grider
+
