@@ -1,8 +1,9 @@
-interface Mappable {
+export interface Mappable {
   location: {
     lat: number;
     lng: number;
   };
+  markerContent(): string;
 }
 
 export class CustomMap {
@@ -29,9 +30,25 @@ export class CustomMap {
       "marker"
     )) as google.maps.MarkerLibrary;
 
-    new AdvancedMarkerElement({
+    const marker = new AdvancedMarkerElement({
       map: this.googleMap,
       position: mappable.location,
+      title: "Place of Interest",
+    });
+
+    const { InfoWindow } = (await google.maps.importLibrary(
+      "maps"
+    )) as google.maps.MapsLibrary;
+
+    marker.addListener("click", () => {
+      const infoWindow = new InfoWindow({
+        content: mappable.markerContent(),
+        ariaLabel: "Marker information",
+      });
+      infoWindow.open({
+        anchor: marker,
+        map: this.googleMap,
+      });
     });
   }
 }
