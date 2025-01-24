@@ -1,0 +1,19 @@
+{
+  "name": "sort",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "scripts": {
+    "start:build": "tsc -w",
+    "start:run": "nodemon ./dist/index.js",
+    "start": "concurrently \"pnpm:start:*\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.9",
+    "typescript": "^5.7.3"
+  }
+}
