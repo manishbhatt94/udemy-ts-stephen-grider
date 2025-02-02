@@ -4,6 +4,11 @@
       "id": 1,
       "name": "Christopher Wallace",
       "age": 25
+    },
+    {
+      "name": "Tupac Shakur",
+      "age": 25,
+      "id": 2
     }
   ]
 }
