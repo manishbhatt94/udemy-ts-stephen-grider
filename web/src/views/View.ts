@@ -1,13 +1,23 @@
 import { HasId, Model } from "../models/Model";
 
 export abstract class View<T extends Model<K>, K extends HasId> {
+  regions: { [key: string]: Element } = {};
+
   constructor(public parent: Element, public model: T) {
     this.bindModel();
   }
 
   abstract template(): string;
 
-  abstract eventsMap(): { [key: string]: () => void };
+  eventsMap(): { [key: string]: () => void } {
+    return {};
+  }
+
+  regionsMap(): { [key: string]: string } {
+    return {};
+  }
+
+  onBeforeRender(): void {}
 
   bindModel(): void {
     this.model.on("change", () => {
@@ -20,6 +30,11 @@ export abstract class View<T extends Model<K>, K extends HasId> {
     const templateElement = document.createElement("template");
     templateElement.innerHTML = this.template();
     this.bindEvents(templateElement.content);
+    this.mapRegions(templateElement.content);
+
+    // to be implemented by sub-classes of View for nesting of sub-views
+    this.onBeforeRender();
+
     this.parent.append(templateElement.content);
   }
 
@@ -30,6 +45,18 @@ export abstract class View<T extends Model<K>, K extends HasId> {
       fragment.querySelectorAll(selector).forEach((element) => {
         element.addEventListener(eventName, eventsMap[eventKey]);
       });
+    }
+  }
+
+  mapRegions(fragment: DocumentFragment): void {
+    const regionsMap = this.regionsMap();
+
+    for (let key in regionsMap) {
+      const selector = regionsMap[key];
+      const element = fragment.querySelector(selector);
+      if (element) {
+        this.regions[key] = element;
+      }
     }
   }
 }
