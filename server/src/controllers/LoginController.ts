@@ -55,4 +55,10 @@ export class LoginController {
       res.send("Invalid credentials");
     }
   }
+
+  @get("/logout")
+  getLogout(req: Request, res: Response): void {
+    req.session = null;
+    res.redirect("/");
+  }
 }

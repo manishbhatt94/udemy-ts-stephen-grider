@@ -1,8 +1,5 @@
-import { Router, Request, Response, NextFunction } from "express";
-
-interface RequestWithBody extends Request {
-  body: { [key: string]: string | undefined };
-}
+import { Request, Response, NextFunction } from "express";
+import { get, controller, use } from "./decorators";
 
 function requireAuth(req: Request, res: Response, next: NextFunction): void {
   if (req.session && req.session.isLoggedIn) {
@@ -11,20 +8,12 @@ function requireAuth(req: Request, res: Response, next: NextFunction): void {
   res.status(403).send("Not permitted");
 }
 
-const router = Router();
-
-router.get("/logout", (req: Request, res: Response) => {
-  req.session = null;
-  res.redirect("/");
-});
-
-router.get("/protected", requireAuth, (req: Request, res: Response) => {
-  res.send("Welcome to protected route, logged in user!");
-});
-
-router.get("/", (req: Request, res: Response) => {
-  if (req.session && req.session.isLoggedIn) {
-    res.send(`
+@controller("")
+export class RootController {
+  @get("/")
+  getRoot(req: Request, res: Response): void {
+    if (req.session && req.session.isLoggedIn) {
+      res.send(`
       <!doctype html>
       <html lang="en">
         <head>
@@ -42,8 +31,8 @@ router.get("/", (req: Request, res: Response) => {
         </body>
       </html>
     `);
-  } else {
-    res.send(`
+    } else {
+      res.send(`
       <!doctype html>
       <html lang="en">
         <head>
@@ -61,7 +50,12 @@ router.get("/", (req: Request, res: Response) => {
         </body>
       </html>
     `);
+    }
   }
-});
 
-export { router };
+  @get("/protected")
+  @use(requireAuth)
+  getProtected(req: Request, res: Response): void {
+    res.send("Welcome to protected route, logged in user!");
+  }
+}
