@@ -13,33 +13,6 @@ function requireAuth(req: Request, res: Response, next: NextFunction): void {
 
 const router = Router();
 
-router.get("/login", (req: Request, res: Response) => {
-  res.send(`
-    <!doctype html>
-    <html lang="en">
-      <head>
-        <title>Login - Express with TS</title>
-      </head>
-      <body>
-        <h1>Login</h1>
-        <article>
-          <form method="POST" action="/login">
-            <p>
-              <label for="email">Email</label>
-              <input type="email" name="email" id="email" />
-            </p>
-            <p>
-              <label for="password">Password</label>
-              <input type="password" name="password" id="password" />
-            </p>
-            <button type="submit">Login</button>
-          </form>
-        </article>
-      </body>
-    </html>
-  `);
-});
-
 router.post("/login", (req: RequestWithBody, res: Response) => {
   const { email, password } = req.body;
 
