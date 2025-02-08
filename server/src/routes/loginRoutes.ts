@@ -13,17 +13,6 @@ function requireAuth(req: Request, res: Response, next: NextFunction): void {
 
 const router = Router();
 
-router.post("/login", (req: RequestWithBody, res: Response) => {
-  const { email, password } = req.body;
-
-  if (email && password && email === "hi@abc.com" && password === "manish") {
-    req.session = { isLoggedIn: true };
-    res.redirect("/");
-  } else {
-    res.send("Invalid credentials");
-  }
-});
-
 router.get("/logout", (req: Request, res: Response) => {
   req.session = null;
   res.redirect("/");
@@ -43,7 +32,7 @@ router.get("/", (req: Request, res: Response) => {
         </head>
         <body>
           <nav>
-            <a href="/logout">Logout</a>
+            <a href="/auth/logout">Logout</a>
           </nav>
           <h1>User Homepage</h1>
           <article>
@@ -62,7 +51,7 @@ router.get("/", (req: Request, res: Response) => {
         </head>
         <body>
           <nav>
-            <a href="/login">Login</a>
+            <a href="/auth/login">Login</a>
           </nav>
           <h1>Guest Homepage</h1>
           <article>
