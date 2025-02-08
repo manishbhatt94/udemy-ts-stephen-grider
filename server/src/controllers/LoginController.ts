@@ -1,9 +1,21 @@
-import { Request, Response } from "express";
-import { get, controller } from "./decorators";
+import { NextFunction, Request, Response } from "express";
+import { get, controller, use } from "./decorators";
+
+function logger(req: Request, res: Response, next: NextFunction) {
+  console.log("Request was made");
+  next();
+}
+
+function secondLogger(req: Request, res: Response, next: NextFunction) {
+  console.log("This is second logger");
+  next();
+}
 
 @controller("/auth")
 export class LoginController {
   @get("/login")
+  @use(logger)
+  @use(secondLogger)
   getLogin(req: Request, res: Response): void {
     res.send(`
       <!doctype html>
