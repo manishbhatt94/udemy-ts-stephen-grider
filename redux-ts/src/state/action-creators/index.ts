@@ -5,25 +5,35 @@ import {
   SearchRepositoriesAction,
   SearchRepositoriesErrorAction,
   SearchRepositoriesSuccessAction,
+  RepositoriesAction,
 } from "../actions";
 import { RepositoriesActionType } from "../action-types";
+
+interface SearchRepositoriesResponse {
+  objects: {
+    package: {
+      name: string;
+    };
+  }[];
+}
 
 const searchEndpoint = `https://registry.npmjs.org/-/v1/search`;
 
 export const searchRepositories = (searchTerm: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<RepositoriesAction>) => {
     dispatch<SearchRepositoriesAction>({
       type: RepositoriesActionType.SEARCH_REPOSITORIES,
     });
     try {
-      const { data } = await axios.get(searchEndpoint, {
-        params: {
-          text: searchTerm,
-        },
-      });
-      const repositoryNames = data.objects.map(
-        (result: any) => result.package.name
+      const { data } = await axios.get<SearchRepositoriesResponse>(
+        searchEndpoint,
+        {
+          params: {
+            text: searchTerm,
+          },
+        }
       );
+      const repositoryNames = data.objects.map((result) => result.package.name);
       dispatch<SearchRepositoriesSuccessAction>({
         type: RepositoriesActionType.SEARCH_REPOSITORIES_SUCCESS,
         payload: repositoryNames,
