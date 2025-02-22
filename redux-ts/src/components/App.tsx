@@ -1,11 +1,11 @@
-import { actionCreators } from "../state";
-
 import "./App.css";
+import { RepositoriesList } from "./RepositoriesList";
 
 function App() {
   return (
     <>
-      <h1>Hello people!👋</h1>
+      <h1>Search for an NPM Package! 📦🔍</h1>
+      <RepositoriesList />
     </>
   );
 }
